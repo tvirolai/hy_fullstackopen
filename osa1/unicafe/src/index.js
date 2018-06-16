@@ -16,12 +16,21 @@ const Statistic = ({text, value}) => {
 }
 
 const Statistics = ({stats, title}) => {
-  return (
-    <div>
-      <h2>{ title }</h2>
-      {stats.map(x => <Statistic text={x.text} value={x.value} />)}
-    </div>
-  )
+  const palautteita = stats.map(x => x.value).filter(x => Number.isInteger(x)).reduce((acc, val) => acc + val)
+  if (palautteita === 0) {
+    return (
+      <div>
+        <h2>Yhtään palautetta ei ole vielä annettu</h2>
+      </div>
+    )
+  } else {
+    return (
+      <div>
+        <h2>{ title }</h2>
+        {stats.map(x => <Statistic text={x.text} value={x.value} />)}
+      </div>
+    )
+  }
 }
 
 class App extends React.Component {
