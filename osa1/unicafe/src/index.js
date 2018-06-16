@@ -1,11 +1,26 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 
-const Nappi = ({handleClick, text}) => {
+const Button = ({handleClick, text}) => {
   return (
     <button onClick={handleClick}>
       {text}
     </button>
+  )
+}
+
+const Statistic = ({text, value}) => {
+  return (
+    <p>{text} {value}</p>
+  )
+}
+
+const Statistics = ({stats, title}) => {
+  return (
+    <div>
+      <h2>{ title }</h2>
+      {stats.map(x => <Statistic text={x.text} value={x.value} />)}
+    </div>
   )
 }
 
@@ -47,18 +62,35 @@ class App extends React.Component {
   positiivisia = () => this.state.hyva / this.aantenMaara() * 100
 
   render() {
+    let stats = [
+      {
+        text: "hyvä",
+        value: this.state.hyva
+      },
+      {
+        text: "neutraali",
+        value: this.state.neutraali
+      },
+      {
+        text: "huono",
+        value: this.state.huono
+      },
+      {
+        text: "keskiarvo",
+        value: this.keskiArvo()
+      },
+      {
+        text: "positiivisia",
+        value: Number(this.positiivisia()) ? `${this.positiivisia()} %` : "0 %"
+      }
+    ];
     return (
       <div>
         <h2>anna palautetta</h2>
-          <Nappi handleClick={this.klikkiHyva} text={"hyvä"}/>
-          <Nappi handleClick={this.klikkiNeutraali} text={"neutraali"}/>
-          <Nappi handleClick={this.klikkiHuono} text={"huono"}/>
-        <h2>statistiikka</h2>
-        <p>hyvä {this.state.hyva}</p>
-        <p>neutraali {this.state.neutraali}</p>
-        <p>huono {this.state.huono}</p>
-        <p>keskiarvo {this.keskiArvo()}</p>
-        <p>positiivisia {this.positiivisia()} %</p>
+          <Button handleClick={this.klikkiHyva} text={"hyvä"}/>
+          <Button handleClick={this.klikkiNeutraali} text={"neutraali"}/>
+          <Button handleClick={this.klikkiHuono} text={"huono"}/>
+          <Statistics stats={stats} title="statistiikka"/>
       </div>
     )
   }
