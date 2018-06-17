@@ -11,7 +11,10 @@ const Button = ({handleClick, text}) => {
 
 const Statistic = ({text, value}) => {
   return (
-    <p>{text} {value}</p>
+    <tr>
+      <td>{text}</td>
+      <td>{value}</td>
+    </tr>
   )
 }
 
@@ -27,7 +30,11 @@ const Statistics = ({stats, title}) => {
     return (
       <div>
         <h2>{ title }</h2>
-        {stats.map(x => <Statistic text={x.text} value={x.value} />)}
+        <table>
+          <tbody>
+          {stats.map(x => <Statistic text={x.text} value={x.value} key={x.text + x.value} />)}
+        </tbody>
+        </table>
       </div>
     )
   }
