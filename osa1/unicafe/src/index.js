@@ -36,26 +36,16 @@ const Statistics = ({stats, title}) => {
 class App extends React.Component {
   constructor(props) {
     super(props)
-    this.state =  {
+    this.state = {
       hyva: 0,
       neutraali: 0,
       huono: 0
     }
   }
-  klikkiHyva = () => {
-    this.setState({
-      hyva: this.state.hyva + 1
-    })
-  }
-  klikkiNeutraali = () => {
-    this.setState({
-      neutraali: this.state.neutraali + 1
-    })
-  }
-  klikkiHuono = () => {
-    this.setState({
-      huono: this.state.huono + 1
-    })
+  asetaArvoon = (arvio, arvo) => {
+    return () => {
+      this.setState({ [arvio]: arvo })
+    }
   }
   aantenMaara = () => {
     const { hyva, neutraali, huono } = this.state;
@@ -96,9 +86,9 @@ class App extends React.Component {
     return (
       <div>
         <h2>anna palautetta</h2>
-          <Button handleClick={this.klikkiHyva} text={"hyvä"}/>
-          <Button handleClick={this.klikkiNeutraali} text={"neutraali"}/>
-          <Button handleClick={this.klikkiHuono} text={"huono"}/>
+          <Button handleClick={this.asetaArvoon("hyva", this.state.hyva + 1)} text={"hyvä"}/>
+          <Button handleClick={this.asetaArvoon("neutraali", this.state.neutraali + 1)} text={"neutraali"}/>
+          <Button handleClick={this.asetaArvoon("huono", this.state.huono + 1)} text={"huono"}/>
           <Statistics stats={stats} title="statistiikka"/>
       </div>
     )
