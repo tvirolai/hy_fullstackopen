@@ -1,0 +1,17 @@
+kayttaja->selain:
+note left of selain
+käyttäjä kirjoittaa muistiinpanon lomakkeelle ja painaa
+lähetä-nappulaa
+end note
+selain->palvelin: POST https://fullstack-exampleapp.herokuapp.com/new_note
+note left of palvelin
+  palvelin lähettää POST-kutsun osoiteeseen
+  https://fullstack-exampleapp.herokuapp.com/new_note
+end note
+palvelin->selain: status 201
+
+note left of selain
+ selain tulostaa konsoliin ilmoituksen {message: "note created"}
+ kun vastaus palvelimelta on saatu. Selaimen näkymä
+ päivitetään ilman viivettä.
+end note
