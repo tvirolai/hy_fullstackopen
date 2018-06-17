@@ -14,12 +14,14 @@ class App extends React.Component {
     super(props)
     this.state = {
       selected: 0,
-      pisteet: { "0": 0,
+      pisteet: {
+        "0": 0,
         "1": 0,
         "2": 0,
         "3": 0,
         "4": 0,
-        "5": 0}
+        "5": 0
+      }
     }
   }
 
@@ -35,6 +37,19 @@ class App extends React.Component {
     stateCopy["pisteet"][avain] += 1
     this.setState(stateCopy);
   }
+  getIndexOfMostVoted = () => {
+    let top = {
+      index: -1,
+      value: -1
+    };
+    for (let prop in this.state.pisteet) {
+      if (this.state.pisteet[prop] > top.value) {
+        top.value = this.state.pisteet[prop]
+        top.index = prop
+      }
+    }
+    return top;
+  }
   render() {
     return (
       <div>
@@ -44,6 +59,11 @@ class App extends React.Component {
         <br />
         <Button handleClick={this.vote} text={"vote"} />
         <Button handleClick={this.selectRandom} text={"next anecdote"} />
+        <br />
+        <h3>anecdote with most votes:</h3>
+        {this.props.anecdotes[parseInt(this.getIndexOfMostVoted().index)]}
+        <br />
+        has {this.getIndexOfMostVoted().value} votes
       </div>
     )
   }
