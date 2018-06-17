@@ -13,7 +13,13 @@ class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      selected: 0
+      selected: 0,
+      pisteet: { "0": 0,
+        "1": 0,
+        "2": 0,
+        "3": 0,
+        "4": 0,
+        "5": 0}
     }
   }
 
@@ -21,15 +27,23 @@ class App extends React.Component {
     return Math.floor(Math.random() * Math.floor(max));
   }
   selectRandom = () => {
-    console.log(this.state)
-    this.setState({selected: this.getRandomInt(anecdotes.length + 1)})
+    this.setState({selected: this.getRandomInt(anecdotes.length)})
+  }
+  vote = () => {
+    let stateCopy = {...this.state};
+    const avain = "" + this.state.selected;
+    stateCopy["pisteet"][avain] += 1
+    this.setState(stateCopy);
   }
   render() {
     return (
       <div>
         {this.props.anecdotes[this.state.selected]}
         <br />
-        <Button handleClick={this.selectRandom} text={"vittu"} />
+        has {this.state.pisteet[this.state.selected]} votes
+        <br />
+        <Button handleClick={this.vote} text={"vote"} />
+        <Button handleClick={this.selectRandom} text={"next anecdote"} />
       </div>
     )
   }
