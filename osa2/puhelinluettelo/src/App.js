@@ -16,12 +16,22 @@ class App extends React.Component {
     this.setState({newName: event.target.value})
   }
 
+  stateContainsName = (name) => {
+    let names = this.state.persons.map(x => x.name)
+    return names.includes(name)
+  }
+
   addName = (event) => {
     console.log("addName called")
     event.preventDefault()
+    console.log(this.stateContainsName(this.state.newName))
     const persons = this.state.persons.concat({name: this.state.newName})
+    if (!this.stateContainsName(this.state.newName)) {
+      this.setState({
+        persons: persons,
+      })
+    }
     this.setState({
-      persons: persons,
       newName: ''
     })
   }
