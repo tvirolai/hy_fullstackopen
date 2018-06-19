@@ -1,4 +1,6 @@
 import React from 'react';
+import Person from './Person'
+import Filter from './Filter'
 
 class App extends React.Component {
   constructor(props) {
@@ -15,7 +17,6 @@ class App extends React.Component {
       filter: ''
     }
   }
-
   handleNoteChange = (event) => {
     console.log("handleNoteChange called")
     console.log(event.target.value)
@@ -53,13 +54,7 @@ class App extends React.Component {
     })
   }
 
-  filterNames = () => {
-    if (this.state.filter !== "") {
-      return this.state.persons.filter(person => person.name.toLowerCase().includes(this.state.filter.toLowerCase()))
-    } else {
-      return this.state.persons
-    }
-  }
+  filterNames = () => (this.state.filter !== "") ? this.state.persons.filter(person => person.name.toLowerCase().includes(this.state.filter.toLowerCase())) : this.state.persons
 
   render() {
     return (
@@ -67,8 +62,7 @@ class App extends React.Component {
         <h2>Puhelinluettelo</h2>
         <form onSubmit={this.addName}>
           <div>
-            rajaa näytettäviä: <input value={this.state.newNote}
-              onChange={this.handleFilterChange}/>
+            rajaa näytettäviä: <Filter value={this.state.filter} handleChange={this.handleFilterChange}/>
           </div>
           <h3>Lisää uusi</h3>
           <div>
@@ -86,7 +80,7 @@ class App extends React.Component {
         <h2>Numerot</h2>
         <table>
           <tbody>
-            {this.filterNames().map(x => <tr key={x.name}><td>{x.name}</td><td>{x.number}</td></tr>)}
+            {this.filterNames().map(person => <Person key={person.name} person={person} />)}
       </tbody>
       </table>
       </div>
