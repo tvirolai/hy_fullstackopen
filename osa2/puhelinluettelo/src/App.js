@@ -45,7 +45,15 @@ class App extends React.Component {
     console.log("addName called")
     event.preventDefault()
     console.log(this.stateContainsName(this.state.newName))
-    const persons = this.state.persons.concat({name: this.state.newName, number: this.state.newNumber})
+    const newPerson = {
+      name: this.state.newName,
+      number: this.state.newNumber,
+      id: Math.max(...this.state.persons.map(x => x.id)) + 1
+    }
+    axios
+      .post('http://localhost:3001/persons', newPerson)
+    console.log(newPerson)
+    const persons = this.state.persons.concat(newPerson)
     if (!this.stateContainsName(this.state.newName)) {
       this.setState({
         persons: persons,
