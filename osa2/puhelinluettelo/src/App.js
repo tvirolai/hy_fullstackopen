@@ -2,6 +2,7 @@ import React from 'react';
 import Person from './Person'
 import Filter from './Filter'
 import personService from './services'
+import Notification from './Notification'
 
 class App extends React.Component {
   constructor(props) {
@@ -10,7 +11,8 @@ class App extends React.Component {
       persons: [],
       newName: '',
       newNumber: '',
-      filter: ''
+      filter: '',
+      message: null
     }
   }
   componentDidMount() {
@@ -40,6 +42,13 @@ class App extends React.Component {
 
   stateContainsNumber = (number) => this.state.persons.map(x => x.number).includes(number)
 
+  showMessage = (message) => {
+    this.setState({message: message})
+    setTimeout(() => {
+      this.setState({message: null})
+    }, 3000)
+  }
+
   addName = (event) => {
     console.log("addName called")
     event.preventDefault()
@@ -47,15 +56,18 @@ class App extends React.Component {
     const newPerson = {
       name: this.state.newName,
       number: this.state.newNumber,
-      id: Math.max(...this.state.persons.map(x => x.id)) + 1
     }
     console.log(newPerson)
-    const persons = this.state.persons.concat(newPerson)
     if (!this.stateContainsName(this.state.newName) && this.state.newName.length > 1) {
-      this.setState({
-        persons: persons,
-      })
-      personService.create(newPerson)
+      personService
+        .create(newPerson)
+        .then(response => {
+          console.log(response.data)
+          this.showMessage(`Lisättiin henkilö ${newPerson.name}`)
+          this.setState({
+            persons: this.state.persons.concat(response.data)
+          })
+        })
     }
 
     if (this.stateContainsName(this.state.newName) && !this.stateContainsNumber(this.state.newNumber)) {
@@ -65,7 +77,18 @@ class App extends React.Component {
           number: this.state.newNumber,
           id: this.state.persons.filter(x => x.name === this.state.newName).pop().id
         }
-        personService.updatePerson(person)
+        personService
+          .updatePerson(person)
+          .then(response => {
+            this.showMessage(`Päivitettiin henkilön ${person.name} tiedot`)
+          })
+          .catch(error => {
+            this.setState({
+              error: `muistiinpano ${person.name} on valitettavasti jo poistettu`})
+          })
+        setTimeout(() => {
+          this.setState({error: null})
+        }, 5000)
         const newPersonList = this.state.persons.filter(x => x.name !== person.name).concat(person)
         this.setState({persons: newPersonList})
       }
@@ -83,6 +106,10 @@ class App extends React.Component {
       this.setState({persons: updatedPersons})
       personService
         .remove(event)
+        .then(response => {
+          console.log(response)
+          this.showMessage(`Poistettiin henkilö ${event.name}`)
+        })
     }
   }
 
@@ -91,6 +118,7 @@ class App extends React.Component {
   render() {
     return (
       <div>
+        <Notification message={this.state.message} />
         <h2>Puhelinluettelo</h2>
         <form onSubmit={this.addName}>
           <div>
