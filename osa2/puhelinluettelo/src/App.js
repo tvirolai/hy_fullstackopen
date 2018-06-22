@@ -1,7 +1,7 @@
 import React from 'react';
 import Person from './Person'
 import Filter from './Filter'
-import axios from 'axios'
+import personService from './services'
 
 class App extends React.Component {
   constructor(props) {
@@ -14,8 +14,8 @@ class App extends React.Component {
     }
   }
   componentDidMount() {
-    axios
-      .get('http://localhost:3001/persons')
+    personService
+      .getAll()
       .then(response => {
         this.setState({persons: response.data})
       })
@@ -50,8 +50,8 @@ class App extends React.Component {
       number: this.state.newNumber,
       id: Math.max(...this.state.persons.map(x => x.id)) + 1
     }
-    axios
-      .post('http://localhost:3001/persons', newPerson)
+    personService
+      .create(newPerson)
     console.log(newPerson)
     const persons = this.state.persons.concat(newPerson)
     if (!this.stateContainsName(this.state.newName)) {
