@@ -36,10 +36,9 @@ class App extends React.Component {
     console.log(event.target.value)
     this.setState({filter: event.target.value})
   }
-  stateContainsName = (name) => {
-    let names = this.state.persons.map(x => x.name)
-    return names.includes(name)
-  }
+  stateContainsName = (name) => this.state.persons.map(x => x.name).includes(name)
+
+  stateContainsNumber = (number) => this.state.persons.map(x => x.number).includes(number)
 
   addName = (event) => {
     console.log("addName called")
@@ -50,15 +49,28 @@ class App extends React.Component {
       number: this.state.newNumber,
       id: Math.max(...this.state.persons.map(x => x.id)) + 1
     }
-    personService
-      .create(newPerson)
     console.log(newPerson)
     const persons = this.state.persons.concat(newPerson)
-    if (!this.stateContainsName(this.state.newName)) {
+    if (!this.stateContainsName(this.state.newName) && this.state.newName.length > 1) {
       this.setState({
         persons: persons,
       })
+      personService.create(newPerson)
     }
+
+    if (this.stateContainsName(this.state.newName) && !this.stateContainsNumber(this.state.newNumber)) {
+      if (window.confirm(`${this.state.newName} on jo luettelossa, korvataanko vanha numero uudella?`)) {
+        const person = {
+          name: this.state.newName,
+          number: this.state.newNumber,
+          id: this.state.persons.filter(x => x.name === this.state.newName).pop().id
+        }
+        personService.updatePerson(person)
+        const newPersonList = this.state.persons.filter(x => x.name !== person.name).concat(person)
+        this.setState({persons: newPersonList})
+      }
+    }
+
     this.setState({
       newName: '',
       newNumber: ''

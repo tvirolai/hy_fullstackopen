@@ -1,8 +1,13 @@
 {
   "persons": [
     {
-      "name": "Jenso",
-      "number": "020-4204",
+      "name": "Tero",
+      "number": "123",
+      "id": 1
+    },
+    {
+      "name": "Tero Vaan",
+      "number": "",
       "id": 2
     }
   ]
