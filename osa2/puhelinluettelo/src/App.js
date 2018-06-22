@@ -84,7 +84,8 @@ class App extends React.Component {
           })
           .catch(error => {
             this.setState({
-              error: `muistiinpano ${person.name} on valitettavasti jo poistettu`})
+              error: `muistiinpano ${person.name} on valitettavasti jo poistettu`
+            })
           })
         setTimeout(() => {
           this.setState({error: null})
