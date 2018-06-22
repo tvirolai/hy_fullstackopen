@@ -65,6 +65,15 @@ class App extends React.Component {
     })
   }
 
+  removeName = (event) => {
+    return () => {
+      const updatedPersons = this.state.persons.filter(x => x !== event)
+      this.setState({persons: updatedPersons})
+      personService
+        .remove(event)
+    }
+  }
+
   filterNames = () => (this.state.filter !== "") ? this.state.persons.filter(person => person.name.toLowerCase().includes(this.state.filter.toLowerCase())) : this.state.persons
 
   render() {
@@ -89,11 +98,7 @@ class App extends React.Component {
           </div>
         </form>
         <h2>Numerot</h2>
-        <table>
-          <tbody>
-            {this.filterNames().map(person => <Person key={person.name} person={person} />)}
-      </tbody>
-      </table>
+            {this.filterNames().map(person => <Person key={person.name} person={person} remove={this.removeName}/>)}
       </div>
     )
   }
