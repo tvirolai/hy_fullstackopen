@@ -133,7 +133,7 @@ describe('most blog posts', () => {
       url: 'http://google.com/tinde',
       likes: 21,
       __v: 2
-    }
+    },
     {
       _id: 'a5422aa17b54a676234d17f8',
       title: 'Sillä kerralla vetivät suoraan vetoketjusta',
@@ -145,13 +145,57 @@ describe('most blog posts', () => {
   ]
 
   test('when there\'s a clear winner, return it', () => {
-    const result = listHelper.mostBlogs(testList)
-    expect(result).toEqual(listWithOneBlog.pop())
-  })
-
-  test('when list has only multiple blogs return that one with most likes', () => {
-    const testList = [...listWithThreeBlogs]
-    const result = listHelper.favoriteBlog(listWithFourBlogs)
+    const result = listHelper.mostBlogs(listWithFourBlogs)
     expect(result).toEqual({author: 'Tiina Dilleri', blogs: 2})
+  })
+})
+
+describe('most likes on blog posts', () => {
+  const testList = [
+    {
+      _id: '5a422aa71b54a676234d17f8',
+      title: 'Go To Statement Considered Harmful',
+      author: 'Edsger W. Dijkstra',
+      url: 'http://www.u.arizona.edu/~rubinson/copyright_violations/Go_To_Considered_Harmful.html',
+      likes: 5,
+      __v: 0
+    },
+    {
+      _id: '5a42a2a71b54a676234d17f8',
+      title: 'Mitä miehen pitää tietää seksistä?',
+      author: 'Maisa Törppö',
+      url: 'http://google.com',
+      likes: 1113,
+      __v: 0
+    },
+    {
+      _id: '5a42a2a71b54676234da17f8',
+      title: 'Mitä naisen pitää tietää seksistä?',
+      author: 'Maisa Törppö',
+      url: 'http://google.com/jeejee',
+      likes: 1,
+      __v: 0
+    },
+    {
+      _id: 'a5422aA17b54a676234d17f8',
+      title: 'Ööh mömömmööö',
+      author: 'Tiina Dilleri',
+      url: 'http://google.com/tinde',
+      likes: 21,
+      __v: 2
+    },
+    {
+      _id: 'a5422aa17b54a676234d17f8',
+      title: 'Sillä kerralla vetivät suoraan vetoketjusta',
+      author: 'Tiina Dilleri',
+      url: 'http://google.com/tinde',
+      likes: 122,
+      __v: 2
+    }
+  ]
+
+  test('the winner should be Maisa Törppö with 1114 likes', () => {
+    const result = listHelper.mostLikes(testList)
+    expect(result).toEqual({author: 'Maisa Törppö', likes: 1114})
   })
 })

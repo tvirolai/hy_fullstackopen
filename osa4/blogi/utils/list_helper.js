@@ -22,11 +22,12 @@ const favoriteBlog = (blogs) => {
 const mostBlogs = (blogs) => {
   const names = blogs.map(x => x.author)
   let freqs = {}
-  for (let name in names) {
-    if (Object.values(freqs).indexOf(name) > -1) {
+  for (let i in names) {
+    let name = names[i]
+    if (Object.keys(freqs).indexOf(name) > -1) {
       freqs[name] += 1
     } else {
-      freq[name] = 1
+      freqs[name] = 1
     }
   }
   let result = {
@@ -42,13 +43,18 @@ const mostBlogs = (blogs) => {
   return result
 }
 
-// const mostLikes = (blogs) => {
-
-// }
+const mostLikes = (blogs) => {
+  const { author, _ } = mostBlogs(blogs)
+  return {
+    author: author,
+    likes: totalLikes(blogs.filter(b => b.author === author))
+  }
+}
 
 module.exports = {
   favoriteBlog,
   totalLikes,
   dummy,
-  mostBlogs
+  mostBlogs,
+  mostLikes
 }
