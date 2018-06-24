@@ -94,11 +94,11 @@ class App extends React.Component {
         this.setState({persons: newPersonList})
       }
     }
-
     this.setState({
       newName: '',
       newNumber: ''
     })
+
   }
 
   removeName = (event) => {
